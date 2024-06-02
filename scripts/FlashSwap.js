@@ -1,16 +1,6 @@
 const { Contract } = require("ethers")
 const WETH9 = require("../utils/WETH9.json")
-
-const artifacts = {
-  UniswapV3Factory: require("@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json"),
-  SwapRouter: require("@uniswap/v3-periphery/artifacts/contracts/SwapRouter.sol/SwapRouter.json"),
-  NFTDescriptor: require("@uniswap/v3-periphery/artifacts/contracts/libraries/NFTDescriptor.sol/NFTDescriptor.json"),
-  NFTPositionDescriptor: require("@uniswap/v3-periphery/artifacts/contracts/NonfungibleTokenPositionDescriptor.sol/NonfungibleTokenPositionDescriptor.json"),
-  NFPositionManager: require("@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json"),
-  Usdt: require("../artifacts/contracts/coin/Tether.sol/Tether.json"),
-  Usdc: require("../artifacts/contracts/coin/UsdCoin.sol/UsdCoin.json"),
-  WETH9,
-};
+const { getBalance, toEth } = require('./utility')
 
 // Load the .env file
 WETH_ADDR= process.env.WETH_ADDR
@@ -28,19 +18,6 @@ if (!WETH_ADDR || !FACTORY_ADDR || !SWAP_ROUTER_ADDR || !NFT_DESCRIPTOR_ADDR || 
   process.exit(1)
 }
 
-// Helper function to get balance
-const toEth = (wei) => ethers.utils.formatEther(wei)
-async function getBalance(signer) {
-  const provider = waffle.provider;
-  const usdtContract = new Contract(TETHER_ADDR,artifacts.Usdt.abi,provider)
-  const usdcContract = new Contract(USDC_ADDR,artifacts.Usdc.abi,provider)
-
-  let usdtBalance = await usdtContract.connect(provider).balanceOf(signer.address)
-  let usdcBalance = await usdcContract.connect(provider).balanceOf(signer.address)
-  console.log('USDT', toEth(usdtBalance.toString()))
-  console.log('USDC', toEth(usdcBalance.toString()))
-  return [usdtBalance, usdcBalance]
-}
 
 async function main() {
   const [owner, signer2] = await ethers.getSigners();
@@ -72,8 +49,8 @@ async function main() {
   console.log('>>> AFTER')
   const [usdtBalAfter, usdcBalAfter] = await getBalance(signer2)
   console.log('> Profit')
-  console.log('USDT', toEth(usdtBalAfter.sub(usdtBalBefore).toString()))
-  console.log('USDC', toEth(usdcBalAfter.sub(usdcBalBefore).toString()))
+  console.log('USDT +', toEth(usdtBalAfter.sub(usdtBalBefore).toString()))
+  console.log('USDC +', toEth(usdcBalAfter.sub(usdcBalBefore).toString()))
 }
 
 main()
