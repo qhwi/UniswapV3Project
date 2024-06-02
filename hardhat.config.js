@@ -17,7 +17,8 @@ if (process.argv[2] === "node") {
     "POSITION_DESCRIPTOR_ADDR",
     "POSITION_MANAGER_ADDR",
     "TETHER_ADDR",
-    "USDC_ADDR"
+    "USDC_ADDR",
+    "DAI_ADDR"
   ];
   
   const envConfig = dotenv.parse(fs.readFileSync('.env'))
