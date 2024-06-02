@@ -1,4 +1,4 @@
-const { Contract } = require("ethers")
+const { Contract, BigNumber } = require("ethers")
 const artifacts = {
     Usdt: require("../artifacts/contracts/coin/Tether.sol/Tether.json"),
     Usdc: require("../artifacts/contracts/coin/UsdCoin.sol/UsdCoin.json")
@@ -36,13 +36,27 @@ exports.getPoolImmutables = async (poolContract) => {
     return immutables
   }
   
-  exports.getPoolState = async (poolContract) => {
-    const slot = poolContract.slot0()
+
+  exports.getPoolData = async (poolContract) => {
+    const [tickSpacing, fee, liquidity, slot0] = await Promise.all([
+      poolContract.tickSpacing(),
+      poolContract.fee(),
+      poolContract.liquidity(),
+      poolContract.slot0(),
+    ])
   
-    const state = {
-      sqrtPriceX96: slot[0]
+    const sqrtPriceX96 = slot0[0]
+    const numerator = BigNumber.from(sqrtPriceX96).pow(2)
+    const denominator = BigNumber.from(2).pow(192)
+    const priceRatio = numerator/denominator
+  
+    return {
+      tickSpacing: tickSpacing,
+      fee: fee,
+      liquidity: liquidity.toString(),
+      sqrtPriceX96: sqrtPriceX96.toString(),
+      priceRatio: priceRatio.toString(),
+      tick: slot0[1],
     }
-  
-    return state
   }
 

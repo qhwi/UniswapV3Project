@@ -2,7 +2,7 @@ const { ethers } = require("hardhat");
 const IUniswapV3PoolABI = require('@uniswap/v3-core/artifacts/contracts/interfaces/IUniswapV3Pool.sol/IUniswapV3Pool.json').abi;
 const SwapRouterABI = require('@uniswap/v3-periphery/artifacts/contracts/interfaces/ISwapRouter.sol/ISwapRouter.json').abi;
 const ERC20ABI = require('../utils/ERC20.json'); 
-const { getPoolImmutables, getPoolState, getBalance, toEth } = require('./utility')
+const { getPoolImmutables, getBalance, toEth } = require('./utility')
 
 USDT_USDC_500= process.env.USDT_USDC_500
 SWAP_ROUTER_ADDR= process.env.SWAP_ROUTER_ADDR
@@ -26,7 +26,6 @@ async function main() {
 
     // Set up swap parameters
     const immutables = await getPoolImmutables(poolContract);
-    const state = await getPoolState(poolContract);
 
     const params = {
         tokenIn: immutables.token0,

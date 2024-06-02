@@ -1,6 +1,7 @@
-const { Contract, BigNumber } = require("ethers")
+const { Contract } = require("ethers")
 const { Token } = require('@uniswap/sdk-core')
 const { Pool, Position, nearestUsableTick } = require('@uniswap/v3-sdk')
+const { getPoolData } = require('./utility')
 
 const artifacts = {
   NFPositionManager: require("@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json"),
@@ -30,29 +31,6 @@ if (!WETH_ADDR || !FACTORY_ADDR || !SWAP_ROUTER_ADDR || !NFT_DESCRIPTOR_ADDR || 
   process.exit(1)
 }
 
-// Helper function to get pool data
-async function getPoolData(poolContract) {
-  const [tickSpacing, fee, liquidity, slot0] = await Promise.all([
-    poolContract.tickSpacing(),
-    poolContract.fee(),
-    poolContract.liquidity(),
-    poolContract.slot0(),
-  ])
-
-  const sqrtPriceX96 = slot0[0]
-  const numerator = BigNumber.from(sqrtPriceX96).pow(2)
-  const denominator = BigNumber.from(2).pow(192)
-  const priceRatio = numerator/denominator
-
-  return {
-    tickSpacing: tickSpacing,
-    fee: fee,
-    liquidity: liquidity.toString(),
-    sqrtPriceX96: sqrtPriceX96.toString(),
-    priceRatio: priceRatio.toString(),
-    tick: slot0[1],
-  }
-}
 
 // Config
 LIQUIDITY = ethers.utils.parseEther('100')
