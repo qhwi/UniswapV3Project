@@ -4,11 +4,8 @@ pragma abicoder v2;
 
 import '@uniswap/v3-periphery/contracts/libraries/TransferHelper.sol';
 import '@uniswap/v3-periphery/contracts/interfaces/ISwapRouter.sol';
-import '@uniswap/v3-core/contracts/libraries/LowGasSafeMath.sol';
 
 contract UniswapV3MultihopSwap {
-    using LowGasSafeMath for uint256;
-    using LowGasSafeMath for int256;
     ISwapRouter public immutable swapRouter;
 
     // Swaps WETH9/DAI/USDC
@@ -23,12 +20,9 @@ contract UniswapV3MultihopSwap {
         WETH9 = _WETH9;
     }
 
-    uint256 private constant MAX_INT =
-        115792089237316195423570985008687907853269984665640564039457584007913129639935;
-
     function swapExactInputMultihop(uint256 amountIn) external returns (uint256 amountOut) {
-        TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), MAX_INT);
-        TransferHelper.safeApprove(WETH9, address(swapRouter), MAX_INT);
+        TransferHelper.safeTransferFrom(WETH9, msg.sender, address(this), amountIn);
+        TransferHelper.safeApprove(WETH9, address(swapRouter), amountIn);
 
         ISwapRouter.ExactInputParams memory params =
             ISwapRouter.ExactInputParams({
