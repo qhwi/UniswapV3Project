@@ -25,6 +25,11 @@ USDT_USDC_3000= process.env.USDT_USDC_3000
 USDT_USDC_10000= process.env.USDT_USDC_10000
 POOL_ADDRS = [USDT_USDC_500, USDT_USDC_3000, USDT_USDC_10000]
 
+if (!WETH_ADDR || !FACTORY_ADDR || !SWAP_ROUTER_ADDR || !NFT_DESCRIPTOR_ADDR || !POSITION_DESCRIPTOR_ADDR || !POSITION_MANAGER_ADDR || !TETHER_ADDR || !USDC_ADDR || !USDT_USDC_500 || !USDT_USDC_3000 || !USDT_USDC_10000) {
+  console.error("! ERROR: Please run all deploy scripts first.")
+  process.exit(1)
+}
+
 // Helper function to get pool data
 async function getPoolData(poolContract) {
   const [tickSpacing, fee, liquidity, slot0] = await Promise.all([

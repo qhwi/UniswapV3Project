@@ -21,6 +21,11 @@ POSITION_MANAGER_ADDR= process.env.POSITION_MANAGER_ADDR
 TETHER_ADDR= process.env.TETHER_ADDR
 USDC_ADDR= process.env.USDC_ADDR
 
+if (!WETH_ADDR || !FACTORY_ADDR || !SWAP_ROUTER_ADDR || !NFT_DESCRIPTOR_ADDR || !POSITION_DESCRIPTOR_ADDR || !POSITION_MANAGER_ADDR || !TETHER_ADDR || !USDC_ADDR) {
+  console.error("! ERROR: Please run 'deploy.js', 'deployTokens.js' first.")
+  process.exit(1)
+}
+
 // Helper function to encode price
 function encodePriceSqrt(reserve1, reserve0) {
   return BigNumber.from(
