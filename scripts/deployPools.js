@@ -1,14 +1,13 @@
 const fs = require("fs");
 const dotenv = require('dotenv');
+const { Contract, BigNumber } = require("ethers")
+const bn = require('bignumber.js')
+bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 })
 
 const artifacts = {
   UniswapV3Factory: require("@uniswap/v3-core/artifacts/contracts/UniswapV3Factory.sol/UniswapV3Factory.json"),
   NFPositionManager: require("@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json"),
 };
-
-const { Contract, BigNumber } = require("ethers")
-const bn = require('bignumber.js')
-bn.config({ EXPONENTIAL_AT: 999999, DECIMAL_PLACES: 40 })
 
 // Load the .env file
 WETH_ADDR= process.env.WETH_ADDR

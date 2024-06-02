@@ -1,13 +1,13 @@
+const { Contract, BigNumber } = require("ethers")
+const { Token } = require('@uniswap/sdk-core')
+const { Pool, Position, nearestUsableTick } = require('@uniswap/v3-sdk')
+
 const artifacts = {
   NFPositionManager: require("@uniswap/v3-periphery/artifacts/contracts/NonfungiblePositionManager.sol/NonfungiblePositionManager.json"),
   Usdt: require("../artifacts/contracts/coin/Tether.sol/Tether.json"),
   Usdc: require("../artifacts/contracts/coin/UsdCoin.sol/UsdCoin.json"),
   UniswapV3Pool: require("@uniswap/v3-core/artifacts/contracts/UniswapV3Pool.sol/UniswapV3Pool.json"),
 };
-
-const { Contract, BigNumber } = require("ethers")
-const { Token } = require('@uniswap/sdk-core')
-const { Pool, Position, nearestUsableTick } = require('@uniswap/v3-sdk')
 
 // Load the .env file
 WETH_ADDR= process.env.WETH_ADDR
