@@ -41,6 +41,10 @@ async function main() {
     // Print the before balances
     console.log('>>> BEFORE')
     const [usdtBalBefore, usdcBalBefore] = await getBalance(signer2)
+    if (usdcBalBefore.lt(amountIn)) {
+        console.error('! ERROR: Insufficient USDC balance')
+        process.exit(1)
+    }
 
     const transaction = await swapRouterContract.connect(signer2).exactInputSingle(params, {
         gasLimit: ethers.utils.hexlify(1000000)
