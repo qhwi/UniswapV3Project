@@ -9,7 +9,7 @@ npx hardhat node
 ## Usage
 ### Deploy
 ```code
-npx hardhat run --network localhost .\scripts\deploy.js
+npx hardhat run --network localhost .\scripts\deployContracts.js
 npx hardhat run --network localhost .\scripts\deployTokens.js
 npx hardhat run --network localhost .\scripts\deployPools.js
 ```

@@ -24,7 +24,7 @@ TETHER_ADDR= process.env.TETHER_ADDR
 USDC_ADDR= process.env.USDC_ADDR
 
 if (!WETH_ADDR || !FACTORY_ADDR || !SWAP_ROUTER_ADDR || !NFT_DESCRIPTOR_ADDR || !POSITION_DESCRIPTOR_ADDR || !POSITION_MANAGER_ADDR || !TETHER_ADDR || !USDC_ADDR) {
-  console.error("! ERROR: Please run 'deploy.js', 'deployTokens.js' first.")
+  console.error("! ERROR: Please run 'deployContracts.js', 'deployTokens.js' first.")
   process.exit(1)
 }
 
