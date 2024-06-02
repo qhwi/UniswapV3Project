@@ -39,6 +39,7 @@ async function getBalance(signer) {
   let usdcBalance = await usdcContract.connect(provider).balanceOf(signer.address)
   console.log('USDT', toEth(usdtBalance.toString()))
   console.log('USDC', toEth(usdcBalance.toString()))
+  return [usdtBalance, usdcBalance]
 }
 
 async function main() {
@@ -46,7 +47,7 @@ async function main() {
   
   // Print the before balances
   console.log('>>> BEFORE')
-  await getBalance(signer2)
+  const [usdtBalBefore, usdcBalBefore] = await getBalance(signer2)
   
   // Deploy the flash swap contract
   Flash = await ethers.getContractFactory('UniswapV3FlashSwap', signer2);
@@ -69,7 +70,10 @@ async function main() {
 
   // Print the after balances
   console.log('>>> AFTER')
-  await getBalance(signer2)
+  const [usdtBalAfter, usdcBalAfter] = await getBalance(signer2)
+  console.log('> Profit')
+  console.log('USDT', toEth(usdtBalAfter.sub(usdtBalBefore).toString()))
+  console.log('USDC', toEth(usdcBalAfter.sub(usdcBalBefore).toString()))
 }
 
 main()
